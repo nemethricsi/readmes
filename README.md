@@ -38,10 +38,72 @@ It's similar in operation to TypeScript: all valid CSS is also valid Sass, and S
   $font-stack: Helvetica, sans-serif
   $primary-color: #333
   .wrapper {
-    font-family: $font-stack;
+    font-family: $font-stack
     h1 {
       font-size: 2rem
       color: $primary-color
     }
   }
 ```
+
+I grouped [Less](http://lesscss.org/) into this category because it's quite similar. I've worked with both extensively, and the main difference I remember is that they use different syntax for variables: `@var: 10` vs `$var: 10`.
+
+### Pros:
+
+- Includes powerful tools like for-loops, mixins, and nesting
+- Has really high developer satisfaction compared with vanilla CSS.
+
+### Cons:
+
+- Requires a build step (and it's pretty slow in development compared with hot-reloading)
+- Because it compiles to CSS, it remains global by nature, and isn't scoped to specific components. It inherits a lot of "cons" from vanilla CSS, such as not automatically vendor-prefixing.
+- Everything happens at build time, so it can't react to things in real-time. As we'll learn later on, Sass variables are nowhere near as powerful as CSS variables for this reason.
+- Requires native dependencies that can fail or get out-of-date. I can't access my old Sass projects without spending hours dealing with native dependency issues. I can't just `npm install` — it's a real pain.
+- CSS has added a bunch of new features over the years, and there have been naming clashes. CSS has a native `min` function now, and it's way better than Sass' `min` function, but the keyword is already reserved. There are workarounds, but it's added friction.
+- It's becoming less and less popular in the JS scene. While popularity isn't everything, a fading solution will have less community resources, less support, and more potential for trouble.
+
+## Aphrodite
+
+[Aphrodite](https://github.com/Khan/aphrodite) was one of the first popular CSS-in-JS libraries. It was created and maintained by [Khan Academy](https://www.khanacademy.org/), an organization I used to work for!
+
+Aphrodite brings a React-Native-like styling solution to the web. Styles are written in JS, and used by your React components:
+
+```jsx
+import { StyleSheet, css } from 'aphrodite';
+function App() {
+  return (
+    <div className={css(styles.wrapper)}>
+      Hello World!
+    </div>
+  );
+}
+const styles = StyleSheet.create({
+  wrapper: {
+    backgroundColor: 'gray',
+    minHeight: 200,
+    '@media (min-width: 1025px)': {
+      fontSize: '1.25rem',
+    },
+  },
+});
+```
+
+### Pros:
+
+- Scoping and specification issues entirely disappear. This is the real game-changer, and the reason so many React applications use one CSS-in-JS solution or another.
+- Allowed you to use JS within your CSS! This makes it easy to share state (eg. design tokens). It also allows for complex iteration and generation without the need to learn a new DSL (as you would with Sass/Less).
+- Encourages good habits — no support for nesting, or other things that can land you in hot water.
+- Automatically adds vendor prefixes, so you don't have to worry about it.
+- Similar API to React Native makes it easy to move between projects, or possibly port components between them (though the CSS alternative on React Native is a bit different, so this isn't trivial).
+- Having styles and JSX in the same file is awesome. No need to keep tabbing between files.
+
+### Cons:
+
+- Requires a build step
+- High-friction. It's a lot of messing around, and it's so easy to forget the `css()` function call.
+- Has a cost in terms of bundle size and runtime execution time, though it's relatively small.
+- Styles must be written in JS. Property names are camelCased, values must be quoted. This can lead to surprising and frustrating differences, like needing to write `content: '""'` for pseudoelements (discussed later in this course).
+- Writing global styles is a bit funky (requires [using an extension](https://github.com/Khan/aphrodite/issues/139#issuecomment-264033545) with some unintuitive syntax).
+- It's not a very active project — no new releases in 2020. Possibly as a result, the project has been losing the mindshare game.
+
+Aphrodite is a great tool: it gets the important parts right and solves the biggest problems we face. My biggest complaint is that it's a bit more high-friction than some of the other alternatives: I have less fun building with Aphrodite compared to styled-components. Though this is subjective.
