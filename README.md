@@ -107,3 +107,47 @@ const styles = StyleSheet.create({
 - It's not a very active project — no new releases in 2020. Possibly as a result, the project has been losing the mindshare game.
 
 Aphrodite is a great tool: it gets the important parts right and solves the biggest problems we face. My biggest complaint is that it's a bit more high-friction than some of the other alternatives: I have less fun building with Aphrodite compared to styled-components. Though this is subjective.
+
+## CSS Modules
+
+[CSS Modules](https://github.com/css-modules/css-modules) is a tool that allows you to write vanilla CSS, and import it into a JS file.
+
+“CSS Modules” is a name for a very specific third-party project, not a built-in CSS feature for modules.
+
+```css
+/* App.module.css */
+.wrapper {
+  background-color: gray;
+  min-height: 200px;
+}
+@media (min-width: 1025px) {
+  .wrapper {
+    font-size: 1.25rem;
+  }
+}
+```
+
+```js
+// App.js
+import styles from './App.module.css';
+function App() {
+  return (
+    <div className={styles.wrapper}>
+      Hello World!
+    </div>
+  );
+}
+```
+
+### Pros:
+
+- Solves scoping and specificity! The `.wrapper` class you write will be globally-unique, even if a different CSS file has a `.wrapper` as well. If you were to `console.log` in the JS file, you'd see something like `.wrapper-abc123`.
+- Feels like writing straight-up CSS, which can be nice and familiar
+- Offers a `composes` feature, to extend existing CSS classes
+
+### Cons:
+
+- Doesn't really offer any modern convenience features, like autoprefixing
+- Hard to share data between CSS and JS
+
+CSS Modules are often mixed with [PostCSS](https://postcss.org/), a plugin ecosystem for extending CSS in beneficial ways (autoprefixing, transpiling, etc). This can smooth out the experience a bit, but in my opinion, it still doesn't feel near as nice in a modern JS context as some of the other options.
