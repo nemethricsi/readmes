@@ -1,5 +1,5 @@
 # Ecosystem World Tour
-## by Josh W. Comeau
+### by Josh W. Comeau
 
 See also: [Demystifying styled-components](https://www.joshwcomeau.com/react/demystifying-styled-components/)
 
@@ -27,3 +27,21 @@ An important bit of context: these are my opinions. They're not “hot takes” 
 - Requires that you remember to add vendor prefixes for many CSS properties, to ensure optimal browser support.
 - Can't easily share data between CSS and JS.
 - When it comes to modern JS application development, it feels a bit like a square peg being squeezed into a round hole. CSS is built for documents, not apps.
+
+## Sass / Less
+
+As we saw in this module's introduction, [Sass](https://sass-lang.com/) is a preprocessor that compiles to vanilla CSS. It extends CSS with features like nesting, variables, and iteration.
+
+It's similar in operation to TypeScript: all valid CSS is also valid Sass, and Sass compiles to CSS at build-time, just like TypeScript compiles to JavaScript.
+
+```Sass
+  $font-stack: Helvetica, sans-serif;
+  $primary-color: #333;
+  .wrapper {
+    font-family: $font-stack;
+    h1 {
+      font-size: 2rem;
+      color: $primary-color;
+    }
+  }
+```
