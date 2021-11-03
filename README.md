@@ -35,13 +35,13 @@ As we saw in this module's introduction, [Sass](https://sass-lang.com/) is a pre
 It's similar in operation to TypeScript: all valid CSS is also valid Sass, and Sass compiles to CSS at build-time, just like TypeScript compiles to JavaScript.
 
 ```Sass
-  $font-stack: Helvetica, sans-serif;
-  $primary-color: #333;
+  $font-stack: Helvetica, sans-serif
+  $primary-color: #333
   .wrapper {
-    font-family: $font-stack;
+    font-family: $font-stack
     h1 {
-      font-size: 2rem;
-      color: $primary-color;
+      font-size: 2rem
+      color: $primary-color
     }
   }
 ```
