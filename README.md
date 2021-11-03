@@ -38,7 +38,7 @@ It's similar in operation to TypeScript: all valid CSS is also valid Sass, and S
   $font-stack: Helvetica, sans-serif
   $primary-color: #333
   .wrapper {
-    font-family: $font-stack
+    font-family: $font-stack;
     h1 {
       font-size: 2rem
       color: $primary-color
