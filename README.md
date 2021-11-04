@@ -20,7 +20,7 @@ An important bit of context: these are my opinions. They're not “hot takes” 
 ### Pros:
 
 - No tooling means less complexity, no runtime performance costs
-- Modern CSS features like CSS Custom Properties? make certain tooling features (eg. Sass variables) redundant
+- Modern CSS features like `CSS Custom Properties` make certain tooling features (eg. Sass variables) redundant
 
 ### Cons:
 
@@ -200,7 +200,7 @@ const Wrapper = styled.div`
 - Feels like writing CSS (since you are just writing css!), with some of the quality-of-life improvements from Sass/Less rolled in.
 - Offers good solutions for animations and global styles — you can write 100% of your CSS with this tool
 - Extremely high developer satisfaction.
-- Best-in-class performance: styled-components version 5 has gotten extremely performant, as we'll see in a future lesson. Plus it supports SSR?, which allows us to improve performance even more.
+- Best-in-class performance: styled-components version 5 has gotten extremely performant, as we'll see in a future lesson. Plus it supports `SSR`, which allows us to improve performance even more.
 - The most popular CSS-in-JS solution out there, according to the # of Github projects that depend on it. Lots of active development, an engaged community, and plenty of resources.
 
 ### Cons:
