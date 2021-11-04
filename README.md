@@ -288,14 +288,95 @@ If I had to make one recommendation, it's that you pick an option that is scoped
 
 As I mentioned in the last video, though, it's worth getting comfortable with styled-components even if you have no intention of switching to it as your primary tool. It'll help you in this course, and give you ideas you can take back to your tool of choice.
 
+_**CSS-in-JS and haters**_
+
+_Some of the tools in this list are part of a category of tools known as “CSS-in JS”—styled-components, CSS modules, and Aphrodite are all examples of “CSS-in-JS” tools._
+
+_A tool is considered “CSS in JS” if the CSS is processed in some way by JavaScript at runtime before being applied._
+
+_The name “CSS-in-JS” has always bothered me—it's a misnomer! It makes it sound like we've come up with some pure-JavaScript way of doing styling. Nothing could be further from the truth: we're still writing 100% full-fat real-world CSS. JS is the delivery mechanism for our CSS, that's all._
+
+_Don't let anyone make you feel bad for choosing a CSS-in-JS tool. Most of the critics are curmudgeons who have never actually used these tools themselves._
+
+## Performance (styled-components)
+
+When it comes to CSS-in-JS tools like styled-components, a lot of focus has been placed on the performance of these tools, and whether they can be detrimental to the user experience.
+
+This article looks at the current-day performance of styled-components, compared to other solutions. This is an optional lesson. Feel free to skip this one if you aren't innately interested in performance — it's an academic lesson for folks who like this stuff.
+
+When we speak about performance, there are two main things we're talking about
+
+1. There is the bundle bloat — the amount of KBs the library adds to your JS bundle
+2. There is the "mount and update speed" — this refers to how long it takes to transform the `styled.whatever` elements into CSS classes, and mount them into the stylesheet. Either on initial mount, or when a dynamic style changes.
+
+Let's look at them in turn.
+
+### Bundle size
+
+In early 2021, styled-components exports a single package, and [it weighs 12.6KB gzipped](https://bundlephobia.com/result?p=styled-components@5.2.1). Happily, the bundle size has been getting smaller, not bigger, as the tool has evolved.
+
+In my opinion, 12.6KB is a very reasonable price to pay for a library as fully-featured as styled-components. But, if you're on a shoestring bundle budget, you can swap it out for `@emotion/styled`.
+
+To make sure I'm seeing accurate measurements, I did my own test. I created a fresh app with create-react-app, and did 3 builds:
+
+- No CSS-in-JS library: 43.2KB gzip
+- styled-components: 55.95KB gzip (+12.75KB)
+- Emotion: 51.7KB gzip (+8.5KB)
+
+For context: a large hero image on a news site might be 200KB, or larger. The comparison isn't apples-to-apples, since the browser has to do more work with JS than with binary data like images, but when it comes down to it, I don't think we need to sweat a bundle bump of under 20KB for a core component of our application (after all, React on its own is over 40KB, and Angular 2 weighs in at over 100KB!).
+
+### Mount and update speed
+
+Consider the following code:
+
+```jsx
+const Button = styled.button`
+  color: red;
+`;
+
+ReactDOM.render(
+  <Button>Hello World</Button>,
+  document.querySelector('#root')
+);
 ```
-CSS-in-JS and haters
 
-Some of the tools in this list are part of a category of tools known as “CSS-in JS”—styled-components, CSS modules, and Aphrodite are all examples of “CSS-in-JS” tools.
+When this code runs, React will render that `styled.button`, and the styled-components library will have to do a few things:
 
-A tool is considered “CSS in JS” if the CSS is processed in some way by JavaScript at runtime before being applied.
+1. Generate a class name, `.button-abc123`, that holds the associated CSS declarations (in this case, `color: red;`).
+2. Insert that class into the `<head>` of the document, in a `<style>` tag
+3. Render a `button` element with the associated class, `<button className="button-abc123">`
 
-The name “CSS-in-JS” has always bothered me—it's a misnomer! It makes it sound like we've come up with some pure-JavaScript way of doing styling. Nothing could be further from the truth: we're still writing 100% full-fat real-world CSS. JS is the delivery mechanism for our CSS, that's all.
+It repeats this process for every styled component in your application 😱
 
-Don't let anyone make you feel bad for choosing a CSS-in-JS tool. Most of the critics are curmudgeons who have never actually used these tools themselves.
-```
+It sounds like it might take a while, but styled-components has gotten ridiculously optimized over the last couple years.
+
+Check out this [benchmarking tool](https://necolas.github.io/react-native-web/benchmarks/). It allows you to compare the performance of different CSS solutions.
+
+In the main test, “Mount deep tree”, it mounts a tree with over 600 styled components, in a deeply-nested structure:
+
+![benchmarking](/images/sc-benchmark.png)
+
+On my desktop computer, here are the results:
+
+- styled-components: 16.5ms
+- Emotion: 17.5ms
+- Straight-up inline styles: 28.3ms
+
+Depending on your app's complexity, you may find that you have well over 600 styled-components on a given page, but you probably don't have an order of magnitude more. Even if you did, and it took 160ms to mount, that's still super quick (for context, it takes humans about 300ms to blink).
+
+Additionally, if your application uses static generation through a framework like Gatsby or Next.js, this work will be done ahead of time, and the mount cost will be zero for your users! They receive a fully-formed HTML document, with all of the classes pre-generated.
+
+The benchmark tool also shows the speed to update dynamic styles, and this speed tends to be even quicker (which makes sense, since updating is usually less work than mounting).
+
+### In conclusion
+
+I think it's fair to say that styled-components is pretty darn quick. Other libraries, like Emotion or Aphrodite, are also very speedy.
+
+So why is it that we think that these tools incur significant performance costs? I think there are two reasons:
+
+1. When styled-components first launched, many years ago, it was far less optimized than it is today. It's possible that folks are relying on stale news for their information.
+2. It really seems like styled-components should be slow, since it has to do all this extra work on mount.
+
+It's an unfortunate truth that most of our opinions around performance come from assumptions, not benchmarks and real-world measurements. It's like how certain "performance tips" get passed around and applied without ever running tests to see if they help or not.
+
+Fortunately, the smart folks working on these libraries have done all the optimizations for us, so we can use these tools without guilt!
