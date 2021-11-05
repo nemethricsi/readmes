@@ -2,7 +2,6 @@
 
 ### by Josh W. Comeau
 
-See also: [Demystifying styled-components](https://www.joshwcomeau.com/react/demystifying-styled-components/)
 
 When it comes to writing CSS in a modern JS application, there are a lot of options!
 In this course, we'll use styled-components. I chose this option for a few reasons:
@@ -208,6 +207,8 @@ const Wrapper = styled.div`
 - Requires a build system
 - It's primarily a React tool (you can use styled-components with [Vue](https://github.com/styled-components/vue-styled-components) and possibly other frameworks, but those communities will be much smaller).
 - Obfuscates the underlying markup tags, which can make it harder to get a sense of the HTML semantics at a glance.
+
+See also: [Demystifying styled-components](https://www.joshwcomeau.com/react/demystifying-styled-components/)
 
 ## Emotion
 
