@@ -1,6 +1,7 @@
 [HSLA](./hsla.md)
 
 <div style="background-color:#3366FF;padding:10px;border-radius:4px;margin:1rem 0;">#3366FF | Default</div>
+
 # Ecosystem World Tour
 
 ### by Josh W. Comeau
